@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investee Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Configure Tailwind theme with Teal accent
+        tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {
+              colors: {
+                // Using Teal as the primary accent
+                'brand-teal': '#14b8a6', // teal-500
+                'brand-teal-light': '#2dd4bf', // teal-400
+                'brand-teal-dark': '#0d9488', // teal-600
+                // Icon colors - White shades for footer
+                'icon-default-white': '#f3f4f6', // gray-100
+                'icon-active-white': '#ffffff', // white
+                // Dark background shades (using Zinc)
+                'dark-bg': '#18181b', // zinc-900
+                'dark-card': '#27272a', // zinc-800
+                'dark-border': '#3f3f46', // zinc-700
+                'dark-text': '#e4e4e7', // zinc-200
+                'dark-text-muted': '#a1a1aa', // zinc-400
+                'dark-heading': '#fafafa', // zinc-50
+              }
+            }
+          }
+        }
+      </script>
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevent body scroll */
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Apply dark mode base styles */
+        .dark body {
+            background-color: theme('colors.dark-bg');
+            color: theme('colors.dark-text');
+        }
+        .dark .bg-card { background-color: theme('colors.dark-card'); }
+        .dark .border-card { border-color: theme('colors.dark-border'); }
+        .dark .text-muted { color: theme('colors.dark-text-muted'); }
+        .dark .text-heading { color: theme('colors.dark-heading'); }
+        .dark .text-link { color: theme('colors.brand-teal-light'); }
+        .dark .hover\:text-link-hover:hover { color: theme('colors.brand-teal'); }
+
+        /* Style for active footer button text */
+        .dark .footer-nav-active span {
+             color: theme('colors.brand-teal-light');
+        }
+        /* Style for active footer button icon */
+         .dark .footer-nav-active img {
+             color: theme('colors.icon-active-white');
+         }
+
+        /* Page visibility */
+        .page { display: none; flex-grow: 1; width: 100%; }
+        .page-active { display: block; }
+        .page-content { padding-top: 1rem; padding-bottom: 1rem; }
+
+        /* Helper class for inline icon */
+        .inline-icon {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            margin-right: 0.3em;
+            vertical-align: -0.125em; /* Adjust alignment */
+        }
+    </style>
+</head>
+<body class="bg-dark-bg text-dark-text">
+
+    <div class="container mx-auto max-w-md p-4 h-screen flex flex-col border border-dark-border rounded-lg shadow-lg bg-dark-card">
+
+        <header class="grid grid-cols-3 items-center mb-2 flex-shrink-0">
+            <div class="w-10"></div>
+            <div class="flex justify-center text-center">
+                 <span class="text-md font-medium text-heading">Up to great work today! <span class="text-lg">🙂</span></span>
+            </div>
+            <div class="flex items-center justify-end">
+                <button id="messages-button" class="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center text-white font-bold shadow hover:bg-teal-700 transition duration-150 flex-shrink-0" aria-label="Messages">
+                    <img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/mail.svg" alt="Messages" class="w-5 h-5"/>
+                </button>
+            </div>
+        </header>
+
+        <div id="page-container" class="flex-grow flex flex-col overflow-y-auto hide-scrollbar">
+
+            <div id="home-page" class="page page-active">
+                 <main class="page-content space-y-6">
+                    <section>
+                        <button class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-4 rounded-lg shadow transition duration-150">
+                            Calls for Application
+                        </button>
+                    </section>
+
+                    <section>
+                         <h2 class="text-sm font-semibold text-teal-300 mb-3 uppercase tracking-wider">Manage Your Round</h2>
+                         <div class="grid grid-cols-2 gap-3">
+                            <button data-page="dataroom-page" class="nav-button bg-zinc-700 hover:bg-zinc-600 text-zinc-200 font-medium py-3 px-2 rounded-lg shadow text-sm transition duration-150">Data Room</button>
+                            <button data-page="overview-page" class="nav-button bg-zinc-700 hover:bg-zinc-600 text-zinc-200 font-medium py-3 px-2 rounded-lg shadow text-sm transition duration-150">Overview</button>
+                            <button data-page="stakeholders-page" class="nav-button bg-zinc-700 hover:bg-zinc-600 text-zinc-200 font-medium py-3 px-2 rounded-lg shadow text-sm transition duration-150">Stakeholders</button>
+                            <button data-page="equity-plan-page" class="nav-button bg-zinc-700 hover:bg-zinc-600 text-zinc-200 font-medium py-3 px-2 rounded-lg shadow text-sm transition duration-150">Equity Plan</button>
+                            <button data-page="reports-page" class="nav-button bg-zinc-700 hover:bg-zinc-600 text-zinc-200 font-medium py-3 px-2 rounded-lg shadow text-sm transition duration-150">Reports</button>
+                            <button data-page="simulations-page" class="nav-button bg-zinc-700 hover:bg-zinc-600 text-zinc-200 font-medium py-3 px-2 rounded-lg shadow text-sm transition duration-150">Simulations</button>
+                            <button data-page="offers-page" class="nav-button bg-zinc-700 hover:bg-zinc-600 text-zinc-200 font-medium py-3 px-2 rounded-lg shadow text-sm transition duration-150">Offers</button>
+                            <button data-page="learning-space-page" class="nav-button bg-zinc-700 hover:bg-zinc-600 text-zinc-200 font-medium py-3 px-2 rounded-lg shadow text-sm transition duration-150">Learning Space</button>
+                         </div>
+                    </section>
+
+                    <section>
+                        <h2 class="text-sm font-semibold text-teal-300 mb-3 uppercase tracking-wider">Insights & Highlights</h2>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-zinc-700 rounded-lg border border-zinc-600">
+                                <h3 class="font-semibold text-md mb-2 text-heading">Market Insights</h3>
+                                <p class="text-sm text-muted">Latest trends in African VC funding, sector analysis, and competitive landscape overview relevant to your industry.</p>
+                            </div>
+                             <div class="p-4 bg-zinc-700 rounded-lg border border-zinc-600">
+                                <h3 class="font-semibold text-md mb-2 text-heading">Portrait of the Week</h3>
+                                <p class="text-sm text-muted">Highlighting a successful fundraising round or strategic partnership within the ecosystem. Learn from peers.</p>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+
+            <div id="dataroom-page" class="page">
+                <main class="page-content space-y-6">
+                    <h2 class="text-xl font-semibold text-teal-300">Data Room</h2>
+                    <p class="text-muted text-sm mb-4">Manage and share key company documents securely with investors.</p>
+
+                    <div class="flex justify-end space-x-2 mb-4">
+                         <button class="bg-zinc-600 hover:bg-zinc-500 text-zinc-200 font-medium py-1 px-3 rounded-lg text-sm transition duration-150">Manage Access</button>
+                         <button class="bg-teal-600 hover:bg-teal-700 text-white font-medium py-1 px-3 rounded-lg text-sm transition duration-150">Upload Document</button>
+                    </div>
+
+                    <div class="space-y-5">
+                        <section>
+                            <h3 class="text-lg font-semibold text-heading mb-2 border-b border-zinc-600 pb-1">Company Information</h3>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex justify-between items-center p-2 bg-zinc-700 rounded">
+                                    <span><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/file-text.svg" class="inline-icon" alt=""/>Company Profile.pdf</span>
+                                    <span class="text-xs text-muted">Updated: 2 days ago</span>
+                                </li>
+                                <li class="flex justify-between items-center p-2 bg-zinc-700 rounded">
+                                    <span><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/users.svg" class="inline-icon" alt=""/>Team Bios.pdf</span>
+                                    <span class="text-xs text-muted">Updated: 1 week ago</span>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h3 class="text-lg font-semibold text-heading mb-2 border-b border-zinc-600 pb-1">Financials</h3>
+                             <ul class="space-y-2 text-sm">
+                                <li class="flex justify-between items-center p-2 bg-zinc-700 rounded">
+                                    <span><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/sheet.svg" class="inline-icon" alt=""/>Financial Model_v3.xlsx</span>
+                                    <span class="text-xs text-muted">Updated: 5 days ago</span>
+                                </li>
+                                <li class="flex justify-between items-center p-2 bg-zinc-700 rounded">
+                                    <span><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/trending-up.svg" class="inline-icon" alt=""/>Verified Metrics (IRR_ROI).pdf</span>
+                                    <span class="text-xs text-muted">Updated: 1 month ago</span>
+                                </li>
+                                 <li class="flex justify-between items-center p-2 bg-zinc-700 rounded">
+                                    <span><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/file-text.svg" class="inline-icon" alt=""/>P&L Statement 2024.pdf</span>
+                                    <span class="text-xs text-muted">Updated: 1 month ago</span>
+                                </li>
+                            </ul>
+                        </section>
+
+                         <section>
+                            <h3 class="text-lg font-semibold text-heading mb-2 border-b border-zinc-600 pb-1">Pitch Deck & Legal</h3>
+                             <ul class="space-y-2 text-sm">
+                                <li class="flex justify-between items-center p-2 bg-zinc-700 rounded">
+                                    <span><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/presentation.svg" class="inline-icon" alt=""/>Investor Pitch Deck_April25.pdf</span>
+                                    <span class="text-xs text-muted">Updated: Today</span>
+                                </li>
+                                <li class="flex justify-between items-center p-2 bg-zinc-700 rounded">
+                                    <span><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/scale.svg" class="inline-icon" alt=""/>Draft Term Sheet_SeriesA.docx</span>
+                                    <span class="text-xs text-muted">Updated: 3 days ago</span>
+                                </li>
+                                 <li class="flex justify-between items-center p-2 bg-zinc-700 rounded">
+                                    <span><img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/file-check.svg" class="inline-icon" alt=""/>Incorporation Documents.zip</span>
+                                    <span class="text-xs text-muted">Updated: 6 months ago</span>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+                </main>
+            </div>
+
+            <div id="overview-page" class="page">
+                 <main class="page-content space-y-6">
+                    <h2 class="text-xl font-semibold text-teal-300">Fundraising Overview</h2>
+
+                    <section class="grid grid-cols-3 gap-4 text-center">
+                        <div class="bg-zinc-700 p-4 rounded-lg shadow">
+                            <p class="text-sm text-muted mb-1">Amount Sought</p>
+                            <p class="text-2xl font-bold text-heading">$1.5M</p>
+                        </div>
+                         <div class="bg-zinc-700 p-4 rounded-lg shadow">
+                            <p class="text-sm text-muted mb-1">Committed</p>
+                            <p class="text-2xl font-bold text-teal-400">$850K</p>
+                        </div>
+                         <div class="bg-zinc-700 p-4 rounded-lg shadow">
+                            <p class="text-sm text-muted mb-1">Raised (Current Round)</p>
+                            <p class="text-2xl font-bold text-heading">$850K</p>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h3 class="text-lg font-semibold text-heading mb-3">Funding Rounds</h3>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-zinc-700 rounded-lg border border-zinc-600">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h4 class="font-semibold text-teal-400">Series A (Active)</h4>
+                                    <span class="text-xs bg-teal-500 text-white px-2 py-0.5 rounded-full">Active</span>
+                                </div>
+                                <p class="text-sm text-muted">Target: $1.5M | Closing: Est. Q3 2025</p>
+                            </div>
+                             <div class="p-3 bg-zinc-700 rounded-lg border border-zinc-600 opacity-70">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h4 class="font-semibold text-heading">Seed Round (Closed)</h4>
+                                     <span class="text-xs bg-zinc-500 text-zinc-200 px-2 py-0.5 rounded-full">Closed</span>
+                                </div>
+                                <p class="text-sm text-muted">Raised: $500K | Closed: Q4 2023</p>
+                            </div>
+                             <div class="p-3 bg-zinc-700 rounded-lg border border-zinc-600 opacity-70">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h4 class="font-semibold text-heading">Pre-Seed (Closed)</h4>
+                                     <span class="text-xs bg-zinc-500 text-zinc-200 px-2 py-0.5 rounded-full">Closed</span>
+                                </div>
+                                <p class="text-sm text-muted">Raised: $100K | Closed: Q1 2023</p>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+
+            <div id="stakeholders-page" class="page">
+                 <main class="page-content space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold text-teal-300">Stakeholders</h2>
+                        <button class="bg-teal-600 hover:bg-teal-700 text-white font-medium py-1 px-3 rounded-lg text-sm transition duration-150">Add New</button>
+                    </div>
+
+                    <section>
+                        <h3 class="text-lg font-semibold text-heading mb-3">Current Investors</h3>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-zinc-700 rounded-lg flex justify-between items-center">
+                                <div>
+                                    <p class="font-medium text-zinc-200">Ada Ventures</p>
+                                    <p class="text-xs text-muted">VC Firm | Seed Lead</p>
+                                </div>
+                                <span class="text-xs text-teal-400">Active</span>
+                            </div>
+                            <div class="p-3 bg-zinc-700 rounded-lg flex justify-between items-center">
+                                <div>
+                                    <p class="font-medium text-zinc-200">Catalyst Fund</p>
+                                    <p class="text-xs text-muted">Impact Investor | Seed</p>
+                                </div>
+                                <span class="text-xs text-teal-400">Active</span>
+                            </div>
+                             <div class="p-3 bg-zinc-700 rounded-lg flex justify-between items-center">
+                                <div>
+                                    <p class="font-medium text-zinc-200">A. Investor</p>
+                                    <p class="text-xs text-muted">Angel Investor | Pre-Seed</p>
+                                </div>
+                                <span class="text-xs text-teal-400">Active</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h3 class="text-lg font-semibold text-heading mb-3">Potential Investors (Series A)</h3>
+                         <div class="space-y-3">
+                            <div class="p-3 bg-zinc-700 rounded-lg flex justify-between items-center">
+                                <div>
+                                    <p class="font-medium text-zinc-200">Partech Africa</p>
+                                    <p class="text-xs text-muted">VC Firm</p>
+                                </div>
+                                <span class="text-xs text-yellow-400">In Conversation</span>
+                            </div>
+                             <div class="p-3 bg-zinc-700 rounded-lg flex justify-between items-center">
+                                <div>
+                                    <p class="font-medium text-zinc-200">TLCom Capital</p>
+                                    <p class="text-xs text-muted">VC Firm</p>
+                                </div>
+                                <span class="text-xs text-blue-400">Deck Sent</span>
+                            </div>
+                        </div>
+                    </section>
+                     <section>
+                        <h3 class="text-lg font-semibold text-heading mb-3">Advisors</h3>
+                         <div class="space-y-3">
+                            <div class="p-3 bg-zinc-700 rounded-lg flex justify-between items-center">
+                                <div>
+                                    <p class="font-medium text-zinc-200">Dr. Evelyn Reed</p>
+                                    <p class="text-xs text-muted">Industry Expert (Fintech)</p>
+                                </div>
+                            </div>
+                         </div>
+                    </section>
+                </main>
+            </div>
+
+            <div id="equity-plan-page" class="page">
+                 <main class="page-content space-y-6">
+                    <h2 class="text-xl font-semibold text-teal-300">Equity Plan & Cap Table</h2>
+
+                    <section>
+                        <h3 class="text-lg font-semibold text-heading mb-3">Cap Table Summary (Post-Seed)</h3>
+                        <div class="p-4 bg-zinc-700 rounded-lg shadow">
+                             <ul class="space-y-2 text-sm text-muted">
+                                <li class="flex justify-between"><span>Founders:</span> <span class="font-medium text-zinc-200">60.0%</span></li>
+                                <li class="flex justify-between"><span>Seed Investors:</span> <span class="font-medium text-zinc-200">20.0%</span></li>
+                                <li class="flex justify-between"><span>ESOP Pool (Allocated):</span> <span class="font-medium text-zinc-200">5.0%</span></li>
+                                <li class="flex justify-between"><span>ESOP Pool (Unallocated):</span> <span class="font-medium text-zinc-200">10.0%</span></li>
+                                <li class="flex justify-between border-t border-zinc-600 pt-2 mt-2"><span>Total:</span> <span class="font-medium text-zinc-200">100.0%</span></li>
+                            </ul>
+                             <button class="mt-4 w-full text-sm text-teal-400 hover:text-teal-300 transition duration-150">View Detailed Cap Table</button>
+                        </div>
+                    </section>
+
+                     <section>
+                        <h3 class="text-lg font-semibold text-heading mb-3">Employee Stock Option Plan (ESOP)</h3>
+                         <div class="p-4 bg-zinc-700 rounded-lg shadow space-y-2 text-sm">
+                            <p class="text-muted">Total Pool Size: <span class="font-medium text-zinc-200">15%</span> of fully diluted shares.</p>
+                            <p class="text-muted">Vesting Schedule: <span class="font-medium text-zinc-200">4-year vest, 1-year cliff</span> typical.</p>
+                            <p class="text-muted">Current Allocated: <span class="font-medium text-zinc-200">5%</span>.</p>
+                             <button class="mt-3 text-sm text-teal-400 hover:text-teal-300 transition duration-150">Manage ESOP Grants</button>
+                        </div>
+                    </section>
+                </main>
+            </div>
+
+            <div id="reports-page" class="page">
+                 <main class="page-content space-y-6">
+                     <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold text-teal-300">Investor Reports</h2>
+                        <button class="bg-teal-600 hover:bg-teal-700 text-white font-medium py-1 px-3 rounded-lg text-sm transition duration-150">Create New Report</button>
+                    </div>
+
+                    <section>
+                        <h3 class="text-lg font-semibold text-heading mb-3">Generated Reports</h3>
+                        <div class="space-y-3">
+                             <div class="p-3 bg-zinc-700 rounded-lg flex justify-between items-center">
+                                <div>
+                                    <p class="font-medium text-zinc-200">Q1 2025 Investor Update</p>
+                                    <p class="text-xs text-muted">Sent: April 15, 2025</p>
+                                </div>
+                                <a href="#" class="text-sm text-teal-400 hover:text-teal-300">View/Download</a>
+                            </div>
+                             <div class="p-3 bg-zinc-700 rounded-lg flex justify-between items-center">
+                                <div>
+                                    <p class="font-medium text-zinc-200">Annual Summary 2024</p>
+                                    <p class="text-xs text-muted">Sent: Jan 30, 2025</p>
+                                </div>
+                                <a href="#" class="text-sm text-teal-400 hover:text-teal-300">View/Download</a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h3 class="text-lg font-semibold text-heading mb-3">Report Templates</h3>
+                         <div class="space-y-3">
+                             <div class="p-3 bg-zinc-700 rounded-lg flex justify-between items-center">
+                                <p class="font-medium text-zinc-200">Quarterly Investor Update Template</p>
+                                <button class="text-sm bg-zinc-600 hover:bg-zinc-500 px-3 py-1 rounded">Use Template</button>
+                            </div>
+                             <div class="p-3 bg-zinc-700 rounded-lg flex justify-between items-center">
+                                <p class="font-medium text-zinc-200">KPI Summary Template</p>
+                                <button class="text-sm bg-zinc-600 hover:bg-zinc-500 px-3 py-1 rounded">Use Template</button>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+
+            <div id="simulations-page" class="page">
+                 <main class="page-content space-y-6">
+                    <h2 class="text-xl font-semibold text-teal-300">Fundraising Simulations</h2>
+                    <p class="text-muted text-sm mb-4">Model the impact of potential future funding rounds on your equity.</p>
+
+                    <section class="p-4 bg-zinc-700 rounded-lg shadow space-y-4">
+                        <h3 class="text-lg font-semibold text-heading mb-3">Run New Simulation</h3>
+                         <div>
+                             <label for="investment-amount" class="block text-sm font-medium text-zinc-300 mb-1">New Investment Amount ($)</label>
+                             <input type="number" id="investment-amount" name="investment-amount" placeholder="e.g., 1500000" class="w-full p-2 bg-zinc-800 border border-zinc-600 rounded text-zinc-200 focus:ring-teal-500 focus:border-teal-500">
+                         </div>
+                          <div>
+                             <label for="pre-money-valuation" class="block text-sm font-medium text-zinc-300 mb-1">Pre-Money Valuation ($)</label>
+                             <input type="number" id="pre-money-valuation" name="pre-money-valuation" placeholder="e.g., 6000000" class="w-full p-2 bg-zinc-800 border border-zinc-600 rounded text-zinc-200 focus:ring-teal-500 focus:border-teal-500">
+                         </div>
+                          <div>
+                             <label for="esop-increase" class="block text-sm font-medium text-zinc-300 mb-1">ESOP Pool Increase (%)</label>
+                             <input type="number" id="esop-increase" name="esop-increase" placeholder="e.g., 5" class="w-full p-2 bg-zinc-800 border border-zinc-600 rounded text-zinc-200 focus:ring-teal-500 focus:border-teal-500">
+                         </div>
+                        <button class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition duration-150">Run Simulation</button>
+                    </section>
+
+                     <section>
+                        <h3 class="text-lg font-semibold text-heading mb-3">Simulation Results</h3>
+                        <div id="simulation-results" class="p-4 bg-zinc-700 rounded-lg border border-zinc-600 min-h-[100px]">
+                            <p class="text-muted text-sm">Simulation results will appear here (e.g., post-money valuation, new investor stake, founder dilution).</p>
+                            </div>
+                    </section>
+                </main>
+            </div>
+
+            <div id="offers-page" class="page">
+                 <main class="page-content space-y-6">
+                    <h2 class="text-xl font-semibold text-teal-300">Investment Offers</h2>
+                     <p class="text-muted text-sm mb-4">Manage and compare incoming term sheets and investment offers.</p>
+                     <div class="space-y-4">
+                         <div class="p-4 bg-zinc-700 rounded-lg border border-zinc-600 shadow">
+                             <div class="flex justify-between items-start mb-2">
+                                 <div>
+                                     <h3 class="font-semibold text-lg text-heading">Offer from Partech Africa</h3>
+                                     <p class="text-xs text-muted">Received: April 10, 2025</p>
+                                 </div>
+                                 <span class="text-xs bg-yellow-500 text-yellow-900 px-2 py-0.5 rounded-full font-medium">Under Review</span>
+                             </div>
+                             <div class="text-sm space-y-1 mb-3">
+                                 <p>Amount: <span class="text-zinc-200">$1,000,000</span></p>
+                                 <p>Pre-Money Valuation: <span class="text-zinc-200">$6,000,000</span></p>
+                                 <p>Key Terms: <span class="text-zinc-300">Standard preferred, Board seat, Pro-rata rights...</span></p>
+                             </div>
+                             <div class="flex justify-end space-x-2">
+                                  <button class="text-sm text-teal-400 hover:text-teal-300">Compare</button>
+                                  <button class="text-sm bg-zinc-600 hover:bg-zinc-500 px-3 py-1 rounded">View Details</button>
+                             </div>
+                         </div>
+                         <div class="p-4 bg-zinc-700 rounded-lg border border-zinc-600 shadow">
+                             <div class="flex justify-between items-start mb-2">
+                                 <div>
+                                     <h3 class="font-semibold text-lg text-heading">Offer from Angel Syndicate</h3>
+                                     <p class="text-xs text-muted">Received: April 5, 2025</p>
+                                 </div>
+                                 <span class="text-xs bg-blue-500 text-blue-100 px-2 py-0.5 rounded-full font-medium">Initial Offer</span>
+                             </div>
+                             <div class="text-sm space-y-1 mb-3">
+                                 <p>Amount: <span class="text-zinc-200">$250,000</span></p>
+                                 <p>Instrument: <span class="text-zinc-200">SAFE Note</span></p>
+                                 <p>Valuation Cap: <span class="text-zinc-300">$5,000,000</span> | Discount: <span class="text-zinc-300">20%</span></p>
+                             </div>
+                             <div class="flex justify-end space-x-2">
+                                  <button class="text-sm text-teal-400 hover:text-teal-300">Compare</button>
+                                  <button class="text-sm bg-zinc-600 hover:bg-zinc-500 px-3 py-1 rounded">View Details</button>
+                             </div>
+                         </div>
+                     </div>
+                </main>
+            </div>
+
+            <div id="learning-space-page" class="page">
+                 <main class="page-content space-y-6">
+                    <h2 class="text-xl font-semibold text-teal-300">Learning Space & Resources</h2>
+                    <p class="text-muted text-sm mb-4">Access guides, templates, webinars, and coaching support.</p>
+
+                    <section>
+                        <h3 class="text-lg font-semibold text-heading mb-3">Featured Resources</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <a href="#" class="block p-3 bg-zinc-700 rounded-lg hover:bg-zinc-600 transition duration-150">
+                                <img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/file-text.svg" class="inline-icon text-teal-400" alt=""/>
+                                <span class="font-medium text-zinc-200">Guide: Understanding Term Sheets</span>
+                                <p class="text-xs text-muted mt-1">Key clauses explained for founders.</p>
+                            </a>
+                             <a href="#" class="block p-3 bg-zinc-700 rounded-lg hover:bg-zinc-600 transition duration-150">
+                                <img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/presentation.svg" class="inline-icon text-teal-400" alt=""/>
+                                <span class="font-medium text-zinc-200">Pitch Deck Template (Series A)</span>
+                                 <p class="text-xs text-muted mt-1">Downloadable template based on best practices.</p>
+                            </a>
+                             <a href="#" class="block p-3 bg-zinc-700 rounded-lg hover:bg-zinc-600 transition duration-150">
+                                <img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/video.svg" class="inline-icon text-teal-400" alt=""/>
+                                <span class="font-medium text-zinc-200">Webinar: Scaling Your Sales Team</span>
+                                 <p class="text-xs text-muted mt-1">Recording from last month's expert session.</p>
+                            </a>
+                        </div>
+                    </section>
+                     <section>
+                        <h3 class="text-lg font-semibold text-heading mb-3">Coaching & Support</h3>
+                         <div class="p-4 bg-zinc-700 rounded-lg shadow">
+                            <p class="text-sm text-muted mb-3">Get personalized advice from experienced mentors.</p>
+                            <button class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition duration-150 text-sm">Book Office Hours</button>
+                         </div>
+                    </section>
+                </main>
+            </div>
+
+            <div id="messages-page" class="page">
+                <main class="page-content">
+                    <h2 class="text-xl font-semibold mb-4 text-teal-300">Messages</h2>
+                     <div class="space-y-4">
+                        <div class="p-4 bg-card border border-card rounded-lg shadow hover:bg-zinc-700 transition duration-150 cursor-pointer">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-semibold text-zinc-200">Investor: Ada Ventures</span>
+                                <span class="text-xs text-zinc-500">2 hours ago</span>
+                            </div>
+                            <p class="text-sm text-zinc-300 font-medium mb-1">Re: Follow-up Question</span></p>
+                            <p class="text-sm text-zinc-400 truncate">Thanks for sending the updated deck, could you clarify the market size assumption...</p>
+                        </div>
+                         <div class="p-4 bg-card border border-card rounded-lg shadow hover:bg-zinc-700 transition duration-150 cursor-pointer">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-semibold text-zinc-200">Platform Notification</span>
+                                <span class="text-xs text-zinc-500">Yesterday</span>
+                            </div>
+                            <p class="text-sm text-zinc-300 font-medium mb-1">New Resource Added: Term Sheet Negotiation Guide</span></p>
+                            <p class="text-sm text-zinc-400 truncate">Check the Learning Space for the latest guide...</p>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+             <div id="outreach-page" class="page">
+                 <main class="page-content space-y-6">
+                    <h2 class="text-xl font-semibold text-teal-300">Investor Outreach</h2>
+                    <p class="text-muted text-sm mb-4">Find investors, manage campaigns, and track engagement.</p>
+
+                    <section class="p-4 bg-zinc-700 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-heading mb-3">Find Investors</h3>
+                        <div class="relative mb-3">
+                             <input type="search" placeholder="Search by name, firm, focus..." class="w-full p-2 pl-10 bg-zinc-800 border border-zinc-600 rounded text-zinc-200 focus:ring-teal-500 focus:border-teal-500 text-sm">
+                             <img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/search.svg" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" alt=""/>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <button class="text-xs bg-zinc-600 hover:bg-zinc-500 px-2 py-1 rounded-full">Sector: Fintech</button>
+                            <button class="text-xs bg-zinc-600 hover:bg-zinc-500 px-2 py-1 rounded-full">Stage: Series A</button>
+                            <button class="text-xs bg-zinc-600 hover:bg-zinc-500 px-2 py-1 rounded-full">Region: Africa</button>
+                            <button class="text-xs text-teal-400 hover:text-teal-300">+ Add Filter</button>
+                        </div>
+                         <button class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition duration-150 text-sm">Search Investors</button>
+                         <div class="mt-4 border-t border-zinc-600 pt-4 space-y-2">
+                             <p class="text-xs text-muted">Example results:</p>
+                             <div class="flex justify-between items-center text-sm">
+                                 <p class="text-zinc-200">Savannah Fund (Early Stage, Africa)</p>
+                                 <button class="text-xs text-teal-400 hover:text-teal-300">View</button>
+                             </div>
+                              <div class="flex justify-between items-center text-sm">
+                                 <p class="text-zinc-200">Norrsken22 (Growth Stage, Africa)</p>
+                                 <button class="text-xs text-teal-400 hover:text-teal-300">View</button>
+                             </div>
+                         </div>
+                    </section>
+
+                    <section class="p-4 bg-zinc-700 rounded-lg shadow">
+                         <div class="flex justify-between items-center mb-3">
+                             <h3 class="text-lg font-semibold text-heading">Outreach Campaigns</h3>
+                             <button class="bg-teal-600 hover:bg-teal-700 text-white font-medium py-1 px-3 rounded-lg text-sm transition duration-150">New Campaign</button>
+                         </div>
+                         <div class="space-y-3">
+                             <div class="p-3 bg-zinc-800 rounded">
+                                 <div class="flex justify-between items-center mb-1">
+                                     <p class="font-medium text-zinc-200">Series A Outreach - Q3 2025</p>
+                                     <span class="text-xs text-teal-400">Active</span>
+                                 </div>
+                                 <p class="text-xs text-muted">Sent: 50 | Opened: 65% | Replied: 15%</p>
+                             </div>
+                              <div class="p-3 bg-zinc-800 rounded opacity-70">
+                                 <div class="flex justify-between items-center mb-1">
+                                     <p class="font-medium text-zinc-200">Seed Extension Follow-up</p>
+                                     <span class="text-xs text-zinc-400">Completed</span>
+                                 </div>
+                                 <p class="text-xs text-muted">Sent: 20 | Opened: 70% | Replied: 25%</p>
+                             </div>
+                         </div>
+                    </section>
+
+                     <section class="p-4 bg-zinc-700 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-heading mb-3">Engagement Tracking</h3>
+                        <div class="grid grid-cols-3 gap-3 text-center">
+                             <div class="bg-zinc-800 p-3 rounded">
+                                <p class="text-xs text-muted mb-1">Emails Sent (Week)</p>
+                                <p class="text-xl font-bold text-heading">15</p>
+                            </div>
+                             <div class="bg-zinc-800 p-3 rounded">
+                                <p class="text-xs text-muted mb-1">Open Rate (%)</p>
+                                <p class="text-xl font-bold text-heading">68%</p>
+                            </div>
+                             <div class="bg-zinc-800 p-3 rounded">
+                                <p class="text-xs text-muted mb-1">Reply Rate (%)</p>
+                                <p class="text-xl font-bold text-heading">18%</p>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+
+            <div id="notifications-page" class="page">
+                 <main class="page-content">
+                    <h2 class="text-xl font-semibold mb-4 text-teal-300">Notifications</h2>
+                     <div class="space-y-4">
+                         <div class="p-3 bg-card border border-card rounded-lg shadow">
+                            <p class="text-sm text-zinc-300"><span class="font-semibold text-teal-400">[Data Room]</span> Ada Ventures viewed your Pitch Deck.</p>
+                            <p class="text-xs text-zinc-500 text-right">15 mins ago</p>
+                        </div>
+                        <div class="p-3 bg-card border border-card rounded-lg shadow">
+                            <p class="text-sm text-zinc-300"><span class="font-semibold text-yellow-400">[Reminder]</span> Follow up with Catalyst Fund scheduled for tomorrow.</p>
+                             <p class="text-xs text-zinc-500 text-right">1 day ago</p>
+                        </div>
+                         <div class="p-3 bg-card border border-card rounded-lg shadow">
+                            <p class="text-sm text-zinc-300"><span class="font-semibold text-pink-400">[New Message]</span> You have a new message from Partech Africa.</p>
+                             <p class="text-xs text-zinc-500 text-right">2 days ago</p>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+        </div> <footer class="border-t border-dark-border pt-2 pb-1 mt-auto flex-shrink-0">
+            <nav class="flex justify-around items-stretch">
+                <button id="footer-home-button" data-page="home-page" class="footer-nav-button flex flex-col items-center justify-center text-center text-xs w-1/3 group hover:bg-zinc-700 rounded-lg p-2 transition-colors duration-150">
+                    <img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/home.svg" alt="Home" class="w-6 h-6 mb-1 text-icon-default-white"/>
+                    <span class="text-zinc-300 font-semibold group-hover:text-brand-teal-light">Home</span>
+                </button>
+                <button id="footer-outreach-button" data-page="outreach-page" class="footer-nav-button flex flex-col items-center justify-center text-center text-xs w-1/3 group hover:bg-zinc-700 rounded-lg p-2 transition-colors duration-150">
+                    <img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/users.svg" alt="Investor Outreach" class="w-6 h-6 mb-1 text-icon-default-white"/>
+                    <span class="text-zinc-300 font-semibold group-hover:text-brand-teal-light">Outreach</span>
+                </button>
+                <button id="footer-notifications-button" data-page="notifications-page" class="footer-nav-button flex flex-col items-center justify-center text-center text-xs w-1/3 group hover:bg-zinc-700 rounded-lg p-2 transition-colors duration-150">
+                     <img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/bell.svg" alt="Notifications" class="w-6 h-6 mb-1 text-icon-default-white"/>
+                     <span class="text-zinc-300 font-semibold group-hover:text-brand-teal-light">Notifications</span>
+                </button>
+            </nav>
+        </footer>
+
+         <div class="mt-4 text-center flex-shrink-0">
+            <p class="text-xs text-zinc-500">
+                Copyright Ⓒ 2025 The Provider makes no warranties, express or implied, including but not limited to, the implied warranties of merchantability and fitness for a particular purpose. This tool and its content does not constitute financial advice and should not be used as such.
+            </p>
+         </div>
+
+    </div> <script>
+        // Javascript remains the same
+        document.addEventListener('DOMContentLoaded', () => {
+            const pages = document.querySelectorAll('.page');
+            const messagesButton = document.getElementById('messages-button');
+            const footerNavButtons = document.querySelectorAll('.footer-nav-button');
+            const mainNavButtons = document.querySelectorAll('.nav-button');
+
+            const iconColors = {
+                'home-page': { default: 'text-icon-default-white', active: 'text-icon-active-white' },
+                'outreach-page': { default: 'text-icon-default-white', active: 'text-icon-active-white' },
+                'notifications-page': { default: 'text-icon-default-white', active: 'text-icon-active-white' }
+            };
+             const allFooterIconColorClasses = [ 'text-icon-default-white', 'text-icon-active-white' ];
+             const defaultFooterTextColor = 'text-zinc-300';
+             const activeFooterTextColor = 'text-brand-teal-light';
+
+            function showPage(pageId) {
+                pages.forEach(page => page.classList.remove('page-active'));
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) {
+                    targetPage.classList.add('page-active');
+                } else {
+                    console.error(`Page with ID ${pageId} not found.`);
+                    document.getElementById('home-page').classList.add('page-active');
+                    pageId = 'home-page';
+                }
+
+                footerNavButtons.forEach(button => {
+                    const buttonPageId = button.dataset.page;
+                    const textSpan = button.querySelector('span');
+                    const iconImg = button.querySelector('img');
+                    const colors = iconColors[buttonPageId] || { default: 'text-icon-default-white', active: 'text-icon-active-white' };
+
+                    textSpan.classList.remove('footer-nav-active', activeFooterTextColor);
+                    textSpan.classList.add(defaultFooterTextColor);
+                    iconImg.classList.remove(...allFooterIconColorClasses);
+                    iconImg.classList.add(colors.default);
+                    button.classList.remove('bg-zinc-700');
+
+                    if (buttonPageId === pageId) {
+                        textSpan.classList.add('footer-nav-active');
+                        textSpan.classList.remove(defaultFooterTextColor);
+                        iconImg.classList.remove(colors.default);
+                        iconImg.classList.add(colors.active);
+                    }
+                });
+
+                 if (pageId !== 'home-page') {
+                     const homeFooterButton = document.getElementById('footer-home-button');
+                     if(homeFooterButton) {
+                        homeFooterButton.querySelector('span').classList.remove('footer-nav-active', activeFooterTextColor);
+                        homeFooterButton.querySelector('span').classList.add(defaultFooterTextColor);
+                        homeFooterButton.querySelector('img').classList.remove(...allFooterIconColorClasses);
+                        homeFooterButton.querySelector('img').classList.add(iconColors['home-page'].default);
+                     }
+                 }
+                document.getElementById('page-container').scrollTop = 0;
+            }
+
+            if(messagesButton) {
+                messagesButton.addEventListener('click', () => showPage('messages-page'));
+            }
+            footerNavButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const pageId = button.dataset.page;
+                    if (pageId) showPage(pageId);
+                });
+            });
+            mainNavButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const pageId = button.dataset.page;
+                    if (pageId) showPage(pageId);
+                });
+            });
+            showPage('home-page');
+        });
+    </script>
+
+</body>
+</html>
